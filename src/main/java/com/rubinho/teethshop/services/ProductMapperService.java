@@ -39,6 +39,7 @@ public class ProductMapperService {
                 .code(productDto.getCode())
                 .description(productDto.getDescription())
                 .count(productDto.getCount())
+                .url(productDto.getUrl())
                 .price(productDto.getPrice())
                 .type(mapProductType(productDto.getType()))
                 .section(mapProductSection(productDto.getSection()))

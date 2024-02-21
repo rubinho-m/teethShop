@@ -51,5 +51,6 @@ public class Product {
     @Column(nullable = false)
     private Integer price;
 
-    //TODO photo URL
+    @Column()
+    private String url;
 }

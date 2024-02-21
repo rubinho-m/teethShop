@@ -1,16 +1,24 @@
 package com.rubinho.teethshop;
 
+import com.rubinho.teethshop.services.FileService;
+import jakarta.annotation.Resource;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 @SpringBootApplication
-public class TeethShopApplication {
+public class TeethShopApplication implements CommandLineRunner {
+    @Resource
+    FileService fileService;
 
     public static void main(String[] args) {
         SpringApplication.run(TeethShopApplication.class, args);
     }
 
+    @Override
+    public void run(String... arg) {
+        fileService.init();
+    }
 
 }
