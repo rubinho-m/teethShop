@@ -7,10 +7,7 @@ import com.rubinho.teethshop.model.ProductType;
 import com.rubinho.teethshop.services.FilterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,14 +23,33 @@ public class FilterController {
         return ResponseEntity.ok(filterService.getAllTypes());
     }
 
+
+    @PostMapping("/types")
+    public ResponseEntity<ProductType> addNewType(ProductType productType){
+        return ResponseEntity.ok(filterService.addType(productType));
+
+    }
+
     @GetMapping("/sections")
     public ResponseEntity<List<ProductSection>> getAllSections() {
         return ResponseEntity.ok(filterService.getAllSections());
     }
 
+    @PostMapping("/sections")
+    public ResponseEntity<ProductSection> addNewSection(ProductSection productSection){
+        return ResponseEntity.ok(filterService.addSection(productSection));
+
+    }
+
     @GetMapping("/producers")
     public ResponseEntity<List<ProductProducer>> getAllProducers() {
         return ResponseEntity.ok(filterService.getAllProducers());
+    }
+
+    @PostMapping("/producers")
+    public ResponseEntity<ProductProducer> addNewProducer(ProductProducer productProducer){
+        return ResponseEntity.ok(filterService.addProducer(productProducer));
+
     }
 
 
