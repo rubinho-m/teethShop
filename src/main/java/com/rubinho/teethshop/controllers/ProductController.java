@@ -1,5 +1,6 @@
 package com.rubinho.teethshop.controllers;
 
+import com.rubinho.teethshop.services.FileService;
 import com.rubinho.teethshop.utils.FiltersData;
 import com.rubinho.teethshop.dto.ProductDto;
 import com.rubinho.teethshop.services.ProductService;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -17,6 +19,7 @@ import java.util.*;
 @RequestMapping("/api/v1/")
 public class ProductController {
     private final ProductService productService;
+    private final FileService fileService;
 
     @GetMapping("/test")
     public ResponseEntity<String> helloWorld() {
@@ -50,9 +53,14 @@ public class ProductController {
     }
 
     @PutMapping("/products/{id}")
-    public ResponseEntity<ProductDto> changeProductById(ProductDto newProduct, @PathVariable Long id) {
+    public ResponseEntity<ProductDto> changeProductById(ProductDto newProduct,
+                                                        @PathVariable Long id,
+                                                        @RequestParam("file") MultipartFile file) {
+        newProduct.setUrl(file.getOriginalFilename());
         productService.changeProductById(newProduct, id);
+        fileService.save(file);
         newProduct.setId(id);
+
         return new ResponseEntity<>(newProduct, HttpStatus.ACCEPTED);
     }
 
@@ -64,7 +72,9 @@ public class ProductController {
     }
 
     @PostMapping("/products")
-    public ResponseEntity<ProductDto> createNewProduct(ProductDto productDto) {
+    public ResponseEntity<ProductDto> createNewProduct(ProductDto productDto, @RequestParam("file") MultipartFile file) {
+        fileService.save(file);
+        productDto.setUrl(file.getOriginalFilename());
         productDto.setId(productService.createProduct(productDto));
         return new ResponseEntity<>(productDto, HttpStatus.CREATED);
     }

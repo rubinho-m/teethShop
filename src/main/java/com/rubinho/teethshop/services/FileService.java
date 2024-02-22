@@ -32,12 +32,10 @@ public class FileService {
     public void save(MultipartFile file) {
         try {
             Files.copy(file.getInputStream(), this.root.resolve(Objects.requireNonNull(file.getOriginalFilename())));
-        } catch (Exception e) {
-            if (e instanceof FileAlreadyExistsException) {
-                throw new AppException("A file of that name already exists.", HttpStatus.BAD_REQUEST);
-            }
+        } catch (FileAlreadyExistsException ignored) {
 
-            throw new RuntimeException(e.getMessage());
+        } catch (Exception e) {
+            throw new AppException("Couldn't save file", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

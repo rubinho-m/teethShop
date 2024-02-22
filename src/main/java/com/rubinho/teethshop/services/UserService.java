@@ -3,6 +3,7 @@ package com.rubinho.teethshop.services;
 import com.rubinho.teethshop.dto.CredentialsDto;
 import com.rubinho.teethshop.dto.SignUpDto;
 import com.rubinho.teethshop.dto.UserDto;
+import com.rubinho.teethshop.model.Role;
 import com.rubinho.teethshop.model.User;
 import com.rubinho.teethshop.exceptions.AppException;
 import com.rubinho.teethshop.mappers.UserMapper;
@@ -48,6 +49,7 @@ public class UserService {
 
         User user = userMapper.signUpToUser(userDto);
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.getPassword())));
+        user.setRole(Role.USER);
 
         User savedUser = userRepository.save(user);
 

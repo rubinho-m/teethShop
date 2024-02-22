@@ -19,7 +19,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Modifying
     @Transactional
     @Query("""
-    UPDATE Product p SET p.name = :name, p.code = :code, p.producer = :producer, p.type = :type, p.section = :section, p.description = :description, p.count = :count, p.price = :price WHERE p.id = :id""")
+    UPDATE Product p SET p.name = :name, p.code = :code, p.producer = :producer, p.type = :type, p.section = :section, p.description = :description, p.count = :count, p.price = :price, p.url = :url WHERE p.id = :id""")
     Integer changeProduct(@Param("id") Long id,
                                 @Param("name") String name,
                                 @Param("code") String code,
@@ -28,7 +28,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                                 @Param("section") ProductSection section,
                                 @Param("description") String description,
                                 @Param("count") Integer count,
-                                @Param("price") Integer price);
+                                @Param("price") Integer price,
+                                @Param("url") String url);
 
     Page<Product> findAllByNameContaining(Pageable pageable, String name);
 }

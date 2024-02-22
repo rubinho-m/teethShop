@@ -121,7 +121,8 @@ public class ProductService {
                     section,
                     newProduct.getDescription(),
                     newProduct.getCount(),
-                    newProduct.getPrice());
+                    newProduct.getPrice(),
+                    newProduct.getUrl());
         } catch (Exception ex){
             throw new AppException("A product with this articul already exists", HttpStatus.BAD_REQUEST);
         }
