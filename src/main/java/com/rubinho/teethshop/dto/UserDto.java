@@ -1,5 +1,6 @@
 package com.rubinho.teethshop.dto;
 
+import com.rubinho.teethshop.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,5 +16,6 @@ public class UserDto {
     private String secondName;
     private String login;
     private String token;
+    private Role role;
 
 }

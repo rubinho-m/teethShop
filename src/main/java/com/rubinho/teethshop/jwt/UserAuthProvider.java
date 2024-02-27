@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Base64;
@@ -48,7 +49,11 @@ public class UserAuthProvider {
         DecodedJWT decoded = verifier.verify(token);
 
         UserDto user = userService.findByLogin(decoded.getIssuer());
+        String username = user.getLogin();
+        UserDetails userDetails = userService.getUserDetails(username);
 
-        return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+
+
+        return new UsernamePasswordAuthenticationToken(user, null, userDetails.getAuthorities());
     }
 }

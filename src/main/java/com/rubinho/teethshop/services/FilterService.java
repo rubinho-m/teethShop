@@ -34,6 +34,25 @@ public class FilterService {
 
     }
 
+    public ProductType changeType(ProductType newProductType, Long id) {
+        try {
+            ProductType productType = productTypeRepository.findById(id)
+                    .orElseThrow(() -> new AppException("No such type", HttpStatus.BAD_REQUEST));
+            productTypeRepository.changeType(id, newProductType.getTypeName());
+            return newProductType;
+        } catch (Exception ex) {
+            throw new AppException("This type already exists", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public void deleteTypeById(Long id) {
+        try {
+            productTypeRepository.deleteById(id);
+        } catch (Exception ex) {
+            throw new AppException("Couldn't delete this type because it is used in some product", HttpStatus.BAD_REQUEST);
+        }
+    }
+
     public List<ProductProducer> getAllProducers() {
         return productProducerRepository.findAll();
     }
@@ -47,6 +66,25 @@ public class FilterService {
 
     }
 
+    public ProductProducer changeProducer(ProductProducer newProductProducer, Long id) {
+        try {
+            ProductProducer productProducer = productProducerRepository.findById(id)
+                    .orElseThrow(() -> new AppException("No such producer", HttpStatus.BAD_REQUEST));
+            productProducerRepository.changeProducer(id, newProductProducer.getProducerName());
+            return newProductProducer;
+        } catch (Exception ex) {
+            throw new AppException("This producer already exists", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public void deleteProducerById(Long id) {
+        try {
+            productProducerRepository.deleteById(id);
+        } catch (Exception ex) {
+            throw new AppException("Couldn't delete this producer because it is used in some product", HttpStatus.BAD_REQUEST);
+        }
+    }
+
     public List<ProductSection> getAllSections() {
         return productSectionRepository.findAll();
     }
@@ -56,6 +94,26 @@ public class FilterService {
             return productSectionRepository.save(productSection);
         } catch (Exception ex) {
             throw new AppException("This section already exists", HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    public ProductSection changeSection(ProductSection newProductSection, Long id) {
+        try {
+            ProductSection productSection = productSectionRepository.findById(id)
+                    .orElseThrow(() -> new AppException("No such section", HttpStatus.BAD_REQUEST));
+            productSectionRepository.changeSection(id, newProductSection.getSectionName());
+            return newProductSection;
+        } catch (Exception ex) {
+            throw new AppException("This section already exists", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public void deleteSectionById(Long id) {
+        try {
+            productSectionRepository.deleteById(id);
+        } catch (Exception ex) {
+            throw new AppException("Couldn't delete this section because it is used in some product", HttpStatus.BAD_REQUEST);
         }
 
     }

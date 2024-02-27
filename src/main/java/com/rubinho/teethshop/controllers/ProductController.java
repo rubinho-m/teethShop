@@ -21,12 +21,6 @@ public class ProductController {
     private final ProductService productService;
     private final FileService fileService;
 
-    @GetMapping("/test")
-    public ResponseEntity<String> helloWorld() {
-        return ResponseEntity.ok("Hello, World!");
-    }
-
-
     @GetMapping("/products")
     public ResponseEntity<List<ProductDto>> getAllProducts(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                                            @RequestParam(value = "page_size", defaultValue = "20") Integer pageSize,
@@ -37,7 +31,7 @@ public class ProductController {
                                                            @RequestParam(value = "search", defaultValue = "none") String search) {
 
         Pageable paging = productService.getPaging(page, pageSize, sort);
-        if (productService.checkIfSearchRequest(search)){
+        if (productService.checkIfSearchRequest(search)) {
             return ResponseEntity.ok(productService.searchProducts(paging, search));
         }
 

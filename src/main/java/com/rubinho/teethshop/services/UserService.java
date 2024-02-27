@@ -10,10 +10,15 @@ import com.rubinho.teethshop.mappers.UserMapper;
 import com.rubinho.teethshop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.CharBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -54,6 +59,25 @@ public class UserService {
         User savedUser = userRepository.save(user);
 
         return userMapper.toUserDto(user);
+
+    }
+
+    private static List<GrantedAuthority> getAuthorities(List<Role> roles) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.toString()));
+        }
+        return authorities;
+    }
+
+    public UserDetails getUserDetails(String username){
+        User user = userRepository.findByLogin(username)
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+        List<Role> roles = new ArrayList<>();
+        roles.add(user.getRole());
+
+        return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), getAuthorities(roles));
+
 
     }
 }

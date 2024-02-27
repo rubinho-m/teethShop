@@ -5,6 +5,7 @@ import com.rubinho.teethshop.dto.CredentialsDto;
 import com.rubinho.teethshop.dto.SignUpDto;
 import com.rubinho.teethshop.dto.UserDto;
 import com.rubinho.teethshop.jwt.UserAuthProvider;
+import com.rubinho.teethshop.model.Role;
 import com.rubinho.teethshop.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ public class AuthController {
         UserDto user = userService.register(signUpDto);
 
         user.setToken(userAuthProvider.createToken(user.getLogin()));
+        user.setRole(Role.USER);
 
         return ResponseEntity.created(URI.create("/users/" + user.getId())).body(user);
 
@@ -37,6 +39,7 @@ public class AuthController {
         UserDto user = userService.login(credentialsDto);
 
         user.setToken(userAuthProvider.createToken(user.getLogin()));
+//        user.setRole(Role.USER);
 
         return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
     }
