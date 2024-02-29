@@ -19,8 +19,8 @@ public class MailController {
     private final MailService mailService;
 
     @PostMapping("/mail/faq")
-    public ResponseEntity<String> testMail(MailDto mailDto) throws MessagingException {
-        mailService.sendMyself(mailDto.getSubject(), mailDto.getText());
+    public ResponseEntity<String> faq(MailDto mailDto) {
+        mailService.sendFAQ(mailDto.getSubject(), mailDto.getText());
         return ResponseEntity.ok("Email sent");
     }
 }

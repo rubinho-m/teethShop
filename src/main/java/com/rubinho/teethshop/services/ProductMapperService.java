@@ -43,6 +43,7 @@ public class ProductMapperService {
                 .price(productDto.getPrice())
                 .type(mapProductType(productDto.getType()))
                 .section(mapProductSection(productDto.getSection()))
+                .code(productDto.getCode())
                 .producer(mapProductProducer(productDto.getProducer()))
                 .build();
     }

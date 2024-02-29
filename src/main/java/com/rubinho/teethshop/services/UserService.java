@@ -20,6 +20,7 @@ import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -27,6 +28,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    //TODO изменить на фронт
+    private final String HEADER = "http://localhost:8080";
 
     public UserDto findByLogin(String login) {
         User user = userRepository.findByLogin(login)
@@ -46,7 +49,7 @@ public class UserService {
 
     }
 
-    public UserDto register(SignUpDto userDto) {
+    public UserDto register(SignUpDto userDto, String uniqueURL) {
         Optional<User> optionalUser = userRepository.findByLogin(userDto.getLogin());
         if (optionalUser.isPresent()) {
             throw new AppException("Login already exists", HttpStatus.BAD_REQUEST);
@@ -54,9 +57,26 @@ public class UserService {
 
         User user = userMapper.signUpToUser(userDto);
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.getPassword())));
-        user.setRole(Role.USER);
+        user.setRole(Role.UNVERIFIED);
+        user.setCode(uniqueURL);
 
         User savedUser = userRepository.save(user);
+
+        return userMapper.toUserDto(user);
+
+    }
+
+    public UserDto activateUser(String code) {
+        User user = userRepository.findByCode(code)
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.BAD_REQUEST));
+        if (user.getRole() != Role.UNVERIFIED) {
+            throw new AppException("Bad user", HttpStatus.BAD_REQUEST);
+        }
+
+
+        user.setRole(Role.USER);
+
+        userRepository.changeRoleById(user.getId(), Role.USER);
 
         return userMapper.toUserDto(user);
 
@@ -70,7 +90,20 @@ public class UserService {
         return authorities;
     }
 
-    public UserDetails getUserDetails(String username){
+
+    public String getCode() {
+        return UUID.randomUUID().toString();
+    }
+
+    public String getUniqueUrlForActivation(String code) {
+        return HEADER + "/api/v1/activate/" + code;
+    }
+
+    public String getUniqueUrlForRestore(String code) {
+        return HEADER + "/api/v1/restore/" + code;
+    }
+
+    public UserDetails getUserDetails(String username) {
         User user = userRepository.findByLogin(username)
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
         List<Role> roles = new ArrayList<>();
@@ -80,4 +113,5 @@ public class UserService {
 
 
     }
+
 }
