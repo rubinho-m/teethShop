@@ -63,6 +63,11 @@ public class MailService {
     }
 
     @Async
+    public void sendRestorePassword(String toEmail, String subject, String text) {
+        sendEmailHtml(toEmail, subject, text, "restore_template.html");
+    }
+
+    @Async
     public void sendCode(String toEmail, String subject, String text) {
         sendEmailHtml(fromEmail, subject, text, "code_template.html");
     }

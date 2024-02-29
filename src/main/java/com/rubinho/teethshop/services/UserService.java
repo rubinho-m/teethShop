@@ -3,6 +3,7 @@ package com.rubinho.teethshop.services;
 import com.rubinho.teethshop.dto.CredentialsDto;
 import com.rubinho.teethshop.dto.SignUpDto;
 import com.rubinho.teethshop.dto.UserDto;
+import com.rubinho.teethshop.jwt.UserAuthProvider;
 import com.rubinho.teethshop.model.Role;
 import com.rubinho.teethshop.model.User;
 import com.rubinho.teethshop.exceptions.AppException;
@@ -28,6 +29,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+
     //TODO изменить на фронт
     private final String HEADER = "http://localhost:8080";
 
@@ -80,6 +82,21 @@ public class UserService {
 
         return userMapper.toUserDto(user);
 
+    }
+
+    public void checkEmail(String email) {
+        User user = userRepository.findByLogin(email)
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.BAD_REQUEST));
+    }
+
+    public UserDto changePassword(String code, String newPassword){
+        User user = userRepository.findByCode(code)
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.BAD_REQUEST));
+
+        String hashPassword = passwordEncoder.encode(CharBuffer.wrap(newPassword));
+        userRepository.changePasswordByCode(hashPassword, code);
+        user.setPassword(hashPassword);
+        return userMapper.toUserDto(user);
     }
 
     private static List<GrantedAuthority> getAuthorities(List<Role> roles) {

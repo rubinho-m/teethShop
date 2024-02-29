@@ -42,7 +42,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                             userAuthProvider.validateToken(token)
                     );
                 } catch (RuntimeException e) {
-                    System.out.println("UHAHAHAHA");
                     SecurityContextHolder.clearContext();
                     resolver.resolveException(request, response, null, e);
 

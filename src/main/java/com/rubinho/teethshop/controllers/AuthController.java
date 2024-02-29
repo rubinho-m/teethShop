@@ -47,12 +47,27 @@ public class AuthController {
         return ResponseEntity.ok(userDto);
     }
 
+    @PostMapping("/password/restore")
+    public ResponseEntity<UserDto> changePassword(String code, String password) {
+        UserDto userDto = userService.changePassword(code, password);
+        return ResponseEntity.ok(userDto);
+    }
+
+    @PostMapping("/password/permission")
+    public ResponseEntity<String> passwordPermission(String login) {
+        userService.checkEmail(login);
+        String code = userService.getCode();
+        mailService.sendRestorePassword(login, "Сброс пароля", userService.getUniqueUrlForRestore(code));
+        return ResponseEntity.ok("valid");
+
+    }
+
+
     @PostMapping("/login")
     public ResponseEntity<UserDto> login(CredentialsDto credentialsDto) {
         UserDto user = userService.login(credentialsDto);
 
         user.setToken(userAuthProvider.createToken(user.getLogin()));
-//        user.setRole(Role.USER);
 
         return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
     }
