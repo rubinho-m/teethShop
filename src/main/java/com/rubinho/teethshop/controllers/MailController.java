@@ -5,6 +5,7 @@ import com.rubinho.teethshop.dto.OrderDto;
 import com.rubinho.teethshop.model.OrderState;
 import com.rubinho.teethshop.services.MailService;
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

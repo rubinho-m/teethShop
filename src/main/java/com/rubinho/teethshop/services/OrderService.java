@@ -68,6 +68,19 @@ public class OrderService {
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
         List<Order> orders = orderRepository.findAllByUserAndState(user, state);
+
+        return ordersListToOrdersDtoList(orders);
+    }
+
+    public List<OrderDto> getAllOrders() {
+
+        List<Order> orders = orderRepository.findAll();
+
+        return ordersListToOrdersDtoList(orders);
+    }
+
+
+    public List<OrderDto> ordersListToOrdersDtoList(List<Order> orders) {
         List<OrderDto> orderDtoList = new ArrayList<>();
 
         for (Order order : orders) {
@@ -77,7 +90,6 @@ public class OrderService {
         }
         return orderDtoList;
     }
-
 
     public OrderDto changeOrder(Long id, OrderCredentialsDto orderCredentialsDto) {
         orderRepository.changeOrder(
@@ -99,11 +111,10 @@ public class OrderService {
         return toOrderDto(order, products);
 
 
-
     }
 
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         orderRepository.deleteById(id);
     }
 

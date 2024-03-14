@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -148,7 +149,7 @@ public class ProductService {
             productRepository.save(product);
             return product.getId();
         } catch (Exception ex) {
-            throw new AppException("A product with this articul already exists", HttpStatus.BAD_REQUEST);
+            throw new AppException(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
     }

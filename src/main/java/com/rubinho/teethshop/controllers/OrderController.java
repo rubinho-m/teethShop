@@ -38,6 +38,11 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrders(userId, state));
     }
 
+    @GetMapping("/orders")
+    public ResponseEntity<List<OrderDto>> getAllOrders(){
+        return ResponseEntity.ok(orderService.getAllOrders());
+    }
+
     @DeleteMapping("/order/{id}")
     public ResponseEntity<String> deleteOrderBy(@PathVariable Long id){
 

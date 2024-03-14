@@ -7,6 +7,7 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -35,7 +36,10 @@ public class MailService {
             message.setFrom(new InternetAddress(fromEmail));
             message.setRecipients(MimeMessage.RecipientType.TO, toEmail);
 
-            String htmlTemplate = readFile("src/main/resources/templates/" + template);
+            ClassPathResource classPathResource = new ClassPathResource("templates/" + template);
+            String htmlTemplate = classPathResource.getContentAsString(StandardCharsets.UTF_8);
+//
+//            String htmlTemplate = readFile("src/main/resources/templates/" + template);
 
             String htmlContent = htmlTemplate.replace("{code}", text);
 
@@ -43,10 +47,11 @@ public class MailService {
             message.setSubject(subject);
 
             mailSender.send(message);
+            System.out.println("SENT");
 
 
         } catch (Exception ex) {
-            throw new AppException("Couldn't send an email", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new AppException(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
 

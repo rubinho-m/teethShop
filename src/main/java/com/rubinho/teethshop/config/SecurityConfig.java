@@ -50,30 +50,32 @@ public class SecurityConfig {
                 .exceptionHandling((exception) -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
-//                        .requestMatchers("/api/v1/cart/**").authenticated()
-//
-//                        .requestMatchers(HttpMethod.PUT, "/api/v1/order/**").hasAuthority(Role.ADMIN.name())
-//                        .requestMatchers(HttpMethod.GET, "/api/v1/order/**").authenticated()
-//                        .requestMatchers(HttpMethod.POST, "/api/v1/order/**").authenticated()
-//                        .requestMatchers(HttpMethod.DELETE, "/api/v1/order/**").hasAuthority(Role.ADMIN.name())
-//
-//                        .requestMatchers("/api/v1/upload").hasAuthority(Role.ADMIN.name())
-//
-//                        .requestMatchers(HttpMethod.POST, "/api/v1/products").hasAuthority(Role.ADMIN.name())
-//                        .requestMatchers(HttpMethod.PUT, "/api/v1/products/**").hasAuthority(Role.ADMIN.name())
-//                        .requestMatchers(HttpMethod.DELETE, "/api/v1/products/**").hasAuthority(Role.ADMIN.name())
-//
-//                        .requestMatchers(HttpMethod.POST, "/api/v1/types").hasAuthority(Role.ADMIN.name())
-//                        .requestMatchers(HttpMethod.PUT, "/api/v1/types/**").hasAuthority(Role.ADMIN.name())
-//                        .requestMatchers(HttpMethod.DELETE, "/api/v1/types/**").hasAuthority(Role.ADMIN.name())
-//
-//                        .requestMatchers(HttpMethod.POST, "/api/v1/sections").hasAuthority(Role.ADMIN.name())
-//                        .requestMatchers(HttpMethod.PUT, "/api/v1/sections/**").hasAuthority(Role.ADMIN.name())
-//                        .requestMatchers(HttpMethod.DELETE, "/api/v1/sections/**").hasAuthority(Role.ADMIN.name())
-//
-//                        .requestMatchers(HttpMethod.POST, "/api/v1/producers").hasAuthority(Role.ADMIN.name())
-//                        .requestMatchers(HttpMethod.PUT, "/api/v1/producers/**").hasAuthority(Role.ADMIN.name())
-//                        .requestMatchers(HttpMethod.DELETE, "/api/v1/producers/**").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers("/api/v1/cart/**").authenticated()
+
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/order/**").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, "/api/v1/order/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/order/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/order/**").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers("/api/v1/orders/**").hasAuthority(Role.ADMIN.name())
+
+
+                        .requestMatchers("/api/v1/upload").hasAuthority(Role.ADMIN.name())
+
+                        .requestMatchers(HttpMethod.POST, "/api/v1/products").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/products/**").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/products/**").hasAuthority(Role.ADMIN.name())
+
+                        .requestMatchers(HttpMethod.POST, "/api/v1/types").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/types/**").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/types/**").hasAuthority(Role.ADMIN.name())
+
+                        .requestMatchers(HttpMethod.POST, "/api/v1/sections").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/sections/**").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/sections/**").hasAuthority(Role.ADMIN.name())
+
+                        .requestMatchers(HttpMethod.POST, "/api/v1/producers").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/producers/**").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/producers/**").hasAuthority(Role.ADMIN.name())
 
 
                         .anyRequest().permitAll()
